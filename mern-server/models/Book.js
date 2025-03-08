@@ -1,0 +1,25 @@
+import mongoose from 'mongoose';
+
+const bookSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  author: { type: String, required: true },
+  description: { type: String },
+  category: { type: String },
+  price: { type: Number, required: true },
+  publishedDate: { type: Date },
+  image: { type: String },
+  stock: { type: Number, default: 0 },
+  createdAt: { type: Date, default: Date.now },
+});
+
+bookSchema.virtual('id').get(function() {
+  return this._id.toHexString();
+});
+
+bookSchema.set('toJSON', {
+  virtuals: true,
+});
+
+const Book = mongoose.model('Book', bookSchema);
+
+export default Book;

@@ -1,0 +1,32 @@
+import express from 'express';
+import cors from 'cors';
+import mongoose from 'mongoose';
+import { config, connectDB } from './config/config.js';
+import bookRoutes from './routes/bookRoutes.js';
+import authRoutes from './routes/authRoutes.js';
+import dotenv from 'dotenv'; 
+
+dotenv.config();
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+const port = config.PORT || 5000;
+
+connectDB()
+  .then(() => {
+    console.log('Connected to MongoDB');
+
+    app.use('/books', bookRoutes);
+     app.use('/auth', authRoutes);
+    app.get('/', (req, res) => {
+      res.send('Hello World');
+    });
+
+    app.listen(port, () => {
+      console.log(`Server is running on port ${port}`);
+    });
+  })
+  .catch((err) => {
+    console.error('Failed to connect to MongoDB', err);
+  });
