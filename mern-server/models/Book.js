@@ -20,6 +20,6 @@ bookSchema.set('toJSON', {
   virtuals: true,
 });
 
-const Book = mongoose.model('Book', bookSchema);
+const Book = mongoose.model('Books', bookSchema);
 
 export default Book;
