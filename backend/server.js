@@ -6,7 +6,8 @@ import bookRoutes from './routes/bookRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import favouriteRoutes from './routes/favouriteRoutes.js';
 import cartRoutes from './routes/cartRoutes.js'
-import orderRoutes from './routes/orderRoutes.js'
+import orderRoutes from './routes/orderRoutes.js';
+import feedbackRoutes from './routes/feedbackRoutes.js';
 import dotenv from 'dotenv'; 
 
 dotenv.config();
@@ -24,6 +25,7 @@ app.use("/orders", orderRoutes);
     app.use('/books', bookRoutes);
      app.use('/auth', authRoutes);
      app.use('/favourites', favouriteRoutes);
+    app.use('/feedback',feedbackRoutes);
     app.get('/', (req, res) => {
       res.send('Hello World');
     });

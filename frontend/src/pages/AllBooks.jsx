@@ -12,9 +12,7 @@ const AllBooks = () => {
     // Fetch books data from the backend
     const fetchBooks = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:5000/books/recentbooks"
-        );
+        const response = await axios.get("http://localhost:5000/books/");
         console.log("Fetched Data:", response.data);
         setData(response.data.data); // Store books in state
       } catch (error) {

@@ -1,6 +1,7 @@
 import User from '../models/User.js';
 import bcrypt from 'bcryptjs';
 import generateToken from '../utils/generateToken.js';
+import Book from '../models/Book.js';
 
   const registerUser = async (req, res) => {
   const { username, email, password, address,role } = req.body;
@@ -130,5 +131,7 @@ const updateUserInformation = async (req, res) => {
   }
 };
 
-export { registerUser, loginUser, getUserInformation,updateUserInformation };
+ 
+
+export { registerUser, loginUser, getUserInformation,updateUserInformation, };
 

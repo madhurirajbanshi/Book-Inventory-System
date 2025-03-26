@@ -49,7 +49,6 @@ const addToCart = async (req, res) => {
 
 const removeFromCart = async (req, res) => {
   try {
-    // Check if user is authenticated
     if (!req.user || !req.user.id) {
       return res.status(403).json({ message: "Unauthorized access" });
     }
@@ -59,27 +58,22 @@ const removeFromCart = async (req, res) => {
       return res.status(400).json({ message: "Book ID is required" });
     }
 
-    // Validate book ID format
     if (!mongoose.Types.ObjectId.isValid(bookId)) {
       return res.status(400).json({ message: "Invalid book ID format" });
     }
 
-    // Find the user
     const user = await User.findById(req.user.id);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Check if the book is in the cart
     const bookIndex = user.cart.findIndex(item => item.book.toString() === bookId);
     if (bookIndex === -1) {
       return res.status(400).json({ message: "Book is not in the cart" });
     }
 
-    // Remove book from the cart
     user.cart.splice(bookIndex, 1);
 
-    // Save the updated user document
     await user.save();
 
     res.status(200).json({ message: "Book removed from cart" });
@@ -89,15 +83,12 @@ const removeFromCart = async (req, res) => {
   }
 };
 
-// Controller for getting the user's cart
 const getCart = async (req, res) => {
   try {
-    // Check if user is authenticated
     if (!req.user || !req.user.id) {
       return res.status(403).json({ message: "Unauthorized access" });
     }
 
-    // Find the user and populate cart with book details
     const user = await User.findById(req.user.id).populate('cart.book');
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -111,4 +102,50 @@ const getCart = async (req, res) => {
 };
 
 
-export { addToCart,removeFromCart,getCart};
+const updateCartItem = async (req, res) => {
+  try {
+    if (!req.user || !req.user.id) {
+      return res.status(403).json({ message: "Unauthorized access" });
+    }
+
+    const { bookId } = req.params;
+    const { quantity } = req.body;
+
+    if (!bookId) {
+      return res.status(400).json({ message: "Book ID is required" });
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(bookId)) {
+      return res.status(400).json({ message: "Invalid book ID format" });
+    }
+
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const cartItemIndex = user.cart.findIndex(
+      item => item.book.toString() === bookId
+    );
+
+    if (cartItemIndex === -1) {
+      return res.status(404).json({ message: "Book not found in cart" });
+    }
+
+    user.cart[cartItemIndex].quantity = quantity;
+
+    await user.save();
+
+    // Populate the cart to return full book details
+    await user.populate('cart.book');
+
+    res.status(200).json(user.cart);
+  } catch (error) {
+    console.error("Error updating cart item:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+
+
+export { addToCart,removeFromCart,getCart,updateCartItem};

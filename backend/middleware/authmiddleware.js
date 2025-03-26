@@ -14,7 +14,9 @@ const authenticateToken = (req, res, next) => {
         .status(403)
         .json({ message: "Token expired. Please signin again" });
     }
-    
+        if (user._id && typeof user._id === 'string') {
+      user._id = new mongoose.Types.ObjectId(user._id);
+    }
     req.user = user;
     next();
   });

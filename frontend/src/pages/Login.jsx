@@ -1,19 +1,24 @@
 import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { authActions } from "../Store/auth";
+import { useDispatch } from "react-redux";
 
 const Login = () => {
-  const [formData, setFormData] = useState({
-    email: "",
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const [values, setValues] = useState({
+    username: "",
     password: "",
   });
 
-  const [errors, setErrors] = useState({
-    email: "",
-    password: "",
-  });
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevState) => ({
+    setValues((prevState) => ({
       ...prevState,
       [name]: value,
     }));
@@ -21,20 +26,51 @@ const Login = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    if (!formData.email) newErrors.email = "Email is required.";
-    else if (!/\S+@\S+\.\S+/.test(formData.email))
-      newErrors.email = "Email is invalid.";
-    if (!formData.password) newErrors.password = "Password is required.";
+    if (!values.username) newErrors.username = "Username is required.";
+    if (!values.password) newErrors.password = "Password is required.";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      // Handle form submission (e.g., send data to the server)
-      console.log("Form data:", formData);
+    if (!validateForm()) return;
+
+    setLoading(true);
+    try {
+      const response = await axios.post("http://localhost:5000/auth/sign-in", {
+        username: values.username,
+        password: values.password,
+      });
+
+      const { token, id, role, message } = response.data;
+
+      console.log("==== Login Successful ====");
+      console.log("User ID:", id);
+      console.log("Role:", role);
+      console.log("Token:", token);
+      console.log("=========================");
+
+      // ✅ Dispatch actions to update Redux store
+      dispatch(authActions.login()); // Set isLoggedIn to true
+      dispatch(authActions.changeRole(role)); // Set user role in Redux
+
+      // Store data in local storage
+      localStorage.setItem("token", token);
+      console.log("tokien after logn", token);
+      localStorage.setItem("userId", id);
+      localStorage.setItem("role", role);
+
+      alert(message);
+      navigate("/AdminDashboard");
+    } catch (error) {
+      setLoading(false);
+      setErrors({
+        general:
+          error.response?.data?.message || "Login failed. Please try again.",
+      });
+      console.error("Login Error:", error.response?.data || error.message);
     }
   };
 
@@ -44,24 +80,27 @@ const Login = () => {
         <h2 className="text-2xl font-bold text-center text-gray-900 mb-4">
           Login
         </h2>
+        {errors.general && (
+          <p className="text-red-500 text-center mb-4">{errors.general}</p>
+        )}
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label
-              htmlFor="email"
+              htmlFor="username"
               className="block text-lg font-medium text-gray-700"
             >
-              Email
+              Username
             </label>
             <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
+              type="text"
+              id="username"
+              name="username"
+              value={values.username}
               onChange={handleChange}
               className="w-full p-3 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
             />
-            {errors.email && (
-              <p className="text-red-500 text-sm">{errors.email}</p>
+            {errors.username && (
+              <p className="text-red-500 text-sm">{errors.username}</p>
             )}
           </div>
 
@@ -76,7 +115,7 @@ const Login = () => {
               type="password"
               id="password"
               name="password"
-              value={formData.password}
+              value={values.password}
               onChange={handleChange}
               className="w-full p-3 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
             />
@@ -89,8 +128,9 @@ const Login = () => {
             <button
               type="submit"
               className="w-full bg-pink-600 text-white text-lg py-3 rounded-md hover:bg-pink-700 transition duration-300"
+              disabled={loading}
             >
-              Login
+              {loading ? "Logging in..." : "Login"}
             </button>
           </div>
         </form>

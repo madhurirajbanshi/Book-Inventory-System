@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import axios from "axios"; // Import axios for API requests
-import { useNavigate } from "react-router-dom"; // For navigation
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -11,7 +11,7 @@ const SignUp = () => {
     password: "",
     confirmPassword: "",
     address: "",
-    role: "user", // Default role set to "user"
+    role: "admin",
   });
 
   const [errors, setErrors] = useState({});
@@ -53,11 +53,11 @@ const SignUp = () => {
         email: values.email,
         password: values.password,
         address: values.address,
-        role: values.role, // Sending role to backend
+        role: values.role,
       });
 
       alert(response.data.message);
-      navigate("/login"); // Redirect to login page after successful signup
+      navigate("/login");
     } catch (error) {
       setLoading(false);
       if (error.response) {
@@ -80,7 +80,6 @@ const SignUp = () => {
           <p className="text-red-500 text-center">{errors.general}</p>
         )}
         <form onSubmit={handleSubmit}>
-          {/* Username Field */}
           <div className="mb-4">
             <label
               htmlFor="username"
@@ -122,7 +121,6 @@ const SignUp = () => {
             )}
           </div>
 
-          {/* Address Field */}
           <div className="mb-4">
             <label
               htmlFor="address"
@@ -164,7 +162,6 @@ const SignUp = () => {
             )}
           </div>
 
-          {/* Confirm Password Field */}
           <div className="mb-4">
             <label
               htmlFor="confirmPassword"
@@ -185,7 +182,6 @@ const SignUp = () => {
             )}
           </div>
 
-          {/* Sign Up Button */}
           <div className="mb-6">
             <button
               type="submit"
@@ -197,7 +193,6 @@ const SignUp = () => {
           </div>
         </form>
 
-        {/* Login Link */}
         <div className="text-center">
           <p className="text-sm">
             Already have an account?{" "}

@@ -22,17 +22,23 @@ const RecentlyAdded = () => {
   }, []);
 
   return (
-    <div className="my-4 mx-auto container max-w-screen-2xl md:px-20  px-4">
-      <h2 className="text-xl font-bold mb-3">Recently Added</h2>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+    <div className="py-12 mx-auto container max-w-screen-2xl md:px-20 px-4">
+      <h2 className="text-2xl font-bold mb-6 text-center">Recently Added</h2>
+
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 md:gap-6">
         {data.length > 0 ? (
           data.map((item, i) => (
-            <div key={i}>
+            <div
+              key={i}
+              className="transition-transform duration-300 hover:scale-105"
+            >
               <BookCard data={item} />
             </div>
           ))
         ) : (
-          <p className="text-gray-500 col-span-5">No books found.</p>
+          <p className="text-gray-500 col-span-5 text-center py-8">
+            No books found.
+          </p>
         )}
       </div>
     </div>

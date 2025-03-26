@@ -116,6 +116,26 @@ const getrecentbooks = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+const searchBooks = async (req, res) => {
+  try {
+    const { title, author, category } = req.query;
+    const query = {};
+
+    if (title) query.title = { $regex: title, $options: "i" }; 
+    if (author) query.author = { $regex: author, $options: "i" }; 
+    if (category) query.category = { $regex: category, $options: "i" }; 
+    const books = await Book.find(query);
+
+    if (books.length === 0) {
+      return res.status(404).json({ message: "No books found" });
+    }
+
+    res.status(200).json(books);
+  } catch (error) {
+    console.error("Error searching books:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
 
 
-export { createBook, getAllBooks, getBookById, updateBook, deleteBook ,getrecentbooks};
+export { createBook, getAllBooks, getBookById, updateBook, deleteBook ,getrecentbooks,searchBooks};

@@ -1,103 +1,60 @@
 import React from "react";
+import { FaStar, FaUserCircle } from "react-icons/fa"; // Star and Avatar icons
 
 const Feedback = () => {
-  // Predefined feedback data
-  const feedbackList = [
+  const feedbacks = [
     {
-      id: 1,
-      feedback:
-        "Great experience! The platform is very user-friendly and easy to navigate.",
+      text: "A Timeless Classic That Captures the Essence of the Jazz Age. F. Scott Fitzgerald’s The Great Gatsby is an iconic masterpiece that brings the roaring twenties to life. The themes of love, wealth, and tragedy are timeless, and this book never fails to leave a lasting impression. The complex characters and the tragic end of Gatsby's pursuit of his dreams offer rich, layered storytelling that resonates deeply.",
       rating: 5,
+      name: "Roshani Karki",
     },
     {
-      id: 2,
-      feedback:
-        "Good, but the interface can be improved in terms of responsiveness.",
+      text: "James Clear's Atomic Habits has been a game-changer in my life. The actionable steps, combined with real-world examples, have helped me develop healthier routines. The book emphasizes small, consistent changes, and I’ve noticed a significant improvement in my personal and professional growth since reading it.",
       rating: 4,
+      name: "Jane Smith",
     },
     {
-      id: 3,
-      feedback:
-        "Needs some work. The layout looks outdated, and it's a bit slow.",
-      rating: 2,
-    },
-    {
-      id: 4,
-      feedback:
-        "I love this website! Excellent resource for learning algorithms with visualizations.",
-      rating: 5,
-    },
-    {
-      id: 5,
-      feedback:
-        "Pretty decent, but I had some trouble with the search feature.",
-      rating: 3,
-    },
-    {
-      id: 6,
-      feedback:
-        "The user interface is nice, but some features are hard to find.",
+      text: "I highly recommend Rich Dad Poor Dad by Robert Kiyosaki for anyone looking to rethink their approach to money and investing. The contrast between the ‘rich’ and ‘poor’ mindsets was eye-opening, and it challenged my preconceived notions about money, wealth-building, and financial freedom. A great starting point for those new to personal finance.",
       rating: 4,
-    },
-    {
-      id: 7,
-      feedback:
-        "Awesome platform! Everything works as expected, and the tutorials are great.",
-      rating: 5,
-    },
-    {
-      id: 8,
-      feedback:
-        "I encountered a few bugs, but overall it's a helpful platform.",
-      rating: 3,
+      name: "Ismarika Sendang",
     },
   ];
 
-  // Function to render stars based on rating
-  const renderStars = (rating) => {
-    const stars = [];
-    for (let i = 1; i <= 5; i++) {
-      stars.push(
-        <svg
-          key={i}
-          className={`w-5 h-5 ${
-            i <= rating ? "text-yellow-400" : "text-gray-300"
-          }`}
-          xmlns="http://www.w3.org/2000/svg"
-          fill="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path d="M12 17.75l-5.33 3.53 1.01-5.89-4.29-4.17 5.91-.85L12 2.25l2.99 6.9 5.91.85-4.29 4.17 1.01 5.89L12 17.75z" />
-        </svg>
-      );
-    }
-    return stars;
-  };
-
   return (
-    <div className="feedback-section py-10 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-6 text-center">
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">User Feedback</h2>
-        <p className="text-gray-600 mb-6">
-          Here are some of the feedback from our users:
-        </p>
-
-        {/* Display Predefined Feedback Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {feedbackList.map((item) => (
-            <div
-              key={item.id}
-              className="bg-white border border-gray-300 rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300 p-6"
-            >
-              {/* Rating */}
-              <div className="flex items-center space-x-2 mb-4">
-                <div className="flex">{renderStars(item.rating)}</div>
+    <div className="p-8 bg-white  flex flex-col items-center">
+      <h2 className="text-3xl font-bold text-gray-800 mb-10 ">
+        📖 Readers' Feedback
+      </h2>
+      <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-7xl">
+        {feedbacks.map((feedback, index) => (
+          <div
+            key={index}
+            className="relative bg-white bg-opacity-90 shadow-lg rounded-2xl p-6 flex flex-col transform transition-all hover:scale-105 hover:shadow-2xl duration-300 w-full"
+          >
+            <div className="flex justify-between items-center mb-4">
+              <div className="flex items-center space-x-3">
+                <FaUserCircle className="text-gray-700 text-4xl " />
+                <p className="text-gray-600 font-semibold">{feedback.name}</p>
               </div>
-              {/* Feedback Text */}
-              <p className="text-gray-700">{item.feedback}</p>
+
+              <div className="flex space-x-1">
+                {Array.from({ length: 5 }, (_, i) => (
+                  <FaStar
+                    key={i}
+                    className={`text-yellow-500 ${
+                      i < feedback.rating ? "fill-current" : "text-gray-400"
+                    }`}
+                  />
+                ))}
+              </div>
             </div>
-          ))}
-        </div>
+
+            {/* Feedback Message */}
+            <p className="text-gray-800 font-medium text-base leading-relaxed text-justify">
+              "{feedback.text}"
+            </p>
+          </div>
+        ))}
       </div>
     </div>
   );

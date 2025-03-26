@@ -1,6 +1,11 @@
 import React from "react";
-
+import { useNavigate } from "react-router-dom";
 const BookSection = () => {
+  const navigate = useNavigate();
+
+  const handleExplore = () => {
+    navigate("/AllBooks");
+  };
   return (
     <div className="flex flex-col md:flex-row items-center justify-between px-6 py-10 bg-white max-w-7xl mx-auto gap-x-12">
       {/* Left: Book Cover Banner */}
@@ -33,17 +38,17 @@ const BookSection = () => {
               className="w-1/4 sm:w-1/5 h-auto object-cover"
             />
             <img
-              src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1731549824i/221499143.jpg"
+              src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1692281423i/195888874.jpg"
               alt="Book 6"
               className="w-1/4 sm:w-1/5 h-auto object-cover"
             />
             <img
-              src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1731549824i/221499143.jpg"
+              src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1718903208i/209245365.jpg"
               alt="Book 6"
               className="w-1/4 sm:w-1/5 h-auto object-cover"
             />
             <img
-              src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1731549824i/221499143.jpg"
+              src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1721154938i/214974640.jpg"
               alt="Book 6"
               className="w-1/4 sm:w-1/5 h-auto object-cover"
             />
@@ -68,7 +73,7 @@ const BookSection = () => {
               className="w-1/4 sm:w-1/5 h-auto object-cover"
             />
             <img
-              src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1702763723i/175399563.jpg"
+              src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1718635526i/213243938.jpg"
               alt="Book 6"
               className="w-1/4 sm:w-1/5 h-auto object-cover"
             />
@@ -112,11 +117,13 @@ const BookSection = () => {
           </div>
         </div>
         {/* Call-to-Action Button */}
-        <button className="mt-4 bg-pink-600 text-white px-6 py-3 rounded shadow-md hover:bg-pink-700 transition">
+        <button
+          className="mt-4 bg-pink-600 text-white px-6 py-3 rounded shadow-md hover:bg-pink-700 transition"
+          onClick={handleExplore}
+        >
           Explore Now
         </button>
       </div>
-   
     </div>
   );
 };

@@ -1,7 +1,8 @@
 import React from "react";
+
 const Footer = () => {
   return (
-    <footer className="bg-white text-black py-6 shadow-md">
+    <footer className="bg-gray-100 text-black py-6 shadow-md mt-6">
       <div className="container mx-auto px-6 md:px-12 lg:px-20">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
           {/* About Section */}
