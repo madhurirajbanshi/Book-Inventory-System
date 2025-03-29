@@ -101,12 +101,12 @@ const UploadBook = () => {
             className="border p-3 w-full rounded"
           >
             <option value="Fiction">Fiction</option>
-            <option value="Non-Fiction">Non-Fiction</option>
             <option value="Science">Science</option>
             <option value="Biography">Biography</option>
-            <option value="Biography">Horror</option>
-            <option value="Biography">Fantasy</option>
-            <option value="Biography">Romance</option>
+            <option value="Horror">Horror</option>
+            <option value="Fantasy">Fantasy</option>
+            <option value="Romance">Romance</option>
+            <option value="Science Fiction">Science Fiction</option>
           </select>
         </div>
 
@@ -151,9 +151,9 @@ const UploadBook = () => {
         <div className="flex justify-center">
           <button
             type="submit"
-            className="w-60 bg-green-600 text-white py-3 rounded"
+            className="w-60 bg-green-800 text-white py-2 rounded"
           >
-            Upload Book
+           Upload
           </button>
         </div>
       </form>

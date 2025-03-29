@@ -30,13 +30,11 @@ const addTofavourites = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
     
-    // Check if book is already in favourites
     const isBookInFavourites = user.favourites.some(favBookId => favBookId.toString() === bookId);
     if (isBookInFavourites) {
       return res.status(400).json({ message: "Book is already in favourites" });
     }
 
-    // Add book to favourites and save
     user.favourites.push(bookId);
     await user.save();
 
@@ -67,19 +65,15 @@ const removeFromfavourites = async (req, res) => {
 
     console.log("User's favourites before removal:", user.favourites);
 
-    // Convert bookId to string for comparison
     const bookIdString = bookId.toString();
 
-    // Check if the book exists in favourites
     const isBookInFavourites = user.favourites.some(favBook => favBook._id.toString() === bookIdString);
     if (!isBookInFavourites) {
       return res.status(400).json({ message: "Book is not in favourites" });
     }
 
-    // Remove book from favourites correctly
     user.favourites = user.favourites.filter(favBook => favBook._id.toString() !== bookIdString);
 
-    // Save changes
     await user.save();
 
     console.log("User's favourites after removal:", user.favourites);
@@ -99,7 +93,6 @@ const getFavourites = async (req, res) => {
       return res.status(403).json({ message: "Unauthorized access" });
     }
 
-    // Populate 'favourites' field with full book details
     const user = await User.findById(req.user.id).populate('favourites'); 
     if (!user) {
       return res.status(404).json({ message: "User not found" });

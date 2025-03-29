@@ -136,7 +136,6 @@ const updateCartItem = async (req, res) => {
 
     await user.save();
 
-    // Populate the cart to return full book details
     await user.populate('cart.book');
 
     res.status(200).json(user.cart);

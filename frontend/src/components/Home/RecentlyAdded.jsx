@@ -22,8 +22,11 @@ const RecentlyAdded = () => {
   }, []);
 
   return (
-    <div className="py-12 mx-auto container max-w-screen-2xl md:px-20 px-4">
-      <h2 className="text-2xl font-bold mb-6 text-center">Recently Added</h2>
+    
+    <div className="py-12 mx-auto container  max-w-screen-2xl md:px-20 px-4">
+      <h2 className="text-2xl font-bold mb-6 mt-8 text-center">
+        Recently Added
+      </h2>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 md:gap-6">
         {data.length > 0 ? (

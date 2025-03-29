@@ -16,7 +16,6 @@ import SearchBooks from "./components/SearchBook/SearchBooks";
 import Favourite from "./components/Profile/Favourite";
 import ViewBookDetails from "./components/ViewBookDetails/ViewBookDetails";
 import UserOrderHistory from "./components/Profile/UserOrderHistory";
-import Setting from "./components/Profile/Setting";
 const PrivateRoute = ({ element, requiredRole }) => {
   const token = localStorage.getItem("token");
   const userRole = localStorage.getItem("role");
@@ -58,7 +57,6 @@ const App = () => {
         <Route path="/profile" element={<Profile />}>
           <Route index element={<Favourite />} />
           <Route path="orderhistory" element={<UserOrderHistory />} />
-          <Route path="settings" element={<Setting />} />
         </Route>
         <Route path="/view-book-details/:id" element={<ViewBookDetails />} />
 

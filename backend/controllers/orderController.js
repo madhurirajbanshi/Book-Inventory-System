@@ -1,40 +1,66 @@
 import Order from "../models/Order.js";
 import User from "../models/User.js";
-
+import Book from "../models/Book.js";
 const placeOrder = async (req, res) => {
   try {
     const userId = req.user.id;
-    
-    const user = await User.findById(userId).populate("cart.book");
-    
+    const { items, totalAmount, status = "Order placed" } = req.body;
+
+    const user = await User.findById(userId);
+
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    
-    if (user.cart.length === 0) {
-      return res.status(400).json({ message: "Cart is empty. Add items before placing an order." });
+
+    if (!items || items.length === 0) {
+      return res.status(400).json({ message: "No items selected for order" });
     }
-    
-    const orders = user.cart.map(item => ({
-      user: userId,
-      book: item.book._id,
-      quantity: item.quantity,
-      status: "Order placed",
-    }));
-    
-    const createdOrders = await Order.insertMany(orders);
-    
-    user.orders.push(...createdOrders.map(order => order._id));
-    user.cart = [];
+
+    // Validate each book exists and has correct pricing
+    const validateItems = await Promise.all(
+      items.map(async (item) => {
+        const book = await Book.findById(item.bookId);
+        if (!book) {
+          throw new Error(`Book with ID ${item.bookId} not found`);
+        }
+        return {
+          user: userId,
+          book: item.bookId,
+          quantity: item.quantity,
+          price: book.price,
+          status:  "Order placed",
+        };
+      })
+    );
+
+    const createdOrders = await Order.insertMany(validateItems);
+
+    // Add orders to user's order history
+    user.orders.push(...createdOrders.map((order) => order._id));
+
+    // Optional: Remove ordered items from cart
+    user.cart = user.cart.filter(
+      (cartItem) =>
+        !items.some(
+          (orderItem) => orderItem.bookId === cartItem.book.toString()
+        )
+    );
+
     await user.save();
-    
-    res.status(201).json({ message: "Order placed successfully", orders: createdOrders });
+
+    res.status(201).json({
+      message: "Order placed successfully",
+      orders: createdOrders,
+      totalAmount,
+    });
   } catch (error) {
     console.error("Error placing order:", error);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({
+      message: "Internal server error",
+      error: error.message,
+    });
   }
 };
-
 const getUserOrders = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -71,13 +97,11 @@ const updateOrder = async (req, res) => {
     
     const { orderId, status } = req.body;
     
-    // Validate the status
     const validStatuses = ["Order placed", "Out for delivery", "Delivered", "Canceled"];
     if (!validStatuses.includes(status)) {
       return res.status(400).json({ message: "Invalid order status" });
     }
     
-    // Find and update the order
     const order = await Order.findById(orderId);
     if (!order) {
       return res.status(404).json({ message: "Order not found" });

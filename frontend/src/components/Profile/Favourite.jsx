@@ -40,16 +40,42 @@ const Favourite = () => {
   };
 
   return (
-    <div className="flex flex-wrap gap-4 justify-center">
-      {FavouriteBooks.length === 0 && <>No Favorite Books</>}
-      {FavouriteBooks?.map((item, i) => (
-        <BookCard
-          key={i}
-          data={item}
-          favourite={true}
-          onRemove={handleRemoveFavourite}
-        />
-      ))}
+    <div className="flex flex-wrap gap-4 mt-6 justify-center p-2 sm:p-4">
+      {FavouriteBooks.length === 0 && (
+        <div className="text-center text-gray-500 text-xl">
+          No Favorite Books
+        </div>
+      )}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {FavouriteBooks?.map((item, i) => (
+          <div key={i} className="w-full sm:w-40 md:w-48 lg:w-56 relative">
+            <button
+              onClick={() => handleRemoveFavourite(item._id)}
+              className="absolute top-2 left-2 z-10 bg-white rounded-full p-1 shadow-md hover:bg-gray-100"
+              aria-label="Remove from favorites"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M3 6h18"></path>
+                <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+              </svg>
+            </button>
+            <BookCard
+              data={item}
+            />
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

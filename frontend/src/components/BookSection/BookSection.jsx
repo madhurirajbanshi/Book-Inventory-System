@@ -8,7 +8,6 @@ const BookSection = () => {
   };
   return (
     <div className="flex flex-col md:flex-row items-center justify-between px-6 py-10 bg-white max-w-7xl mx-auto gap-x-12">
-      {/* Left: Book Cover Banner */}
       <div className="w-full md:w-2/5 relative">
         <div className="w-full h-full bg-gray-100 overflow-hidden rounded-lg shadow-lg">
           <div className="flex flex-wrap justify-center">
@@ -116,7 +115,6 @@ const BookSection = () => {
             <p className="text-xs text-gray-500">PDFs Downloaded</p>
           </div>
         </div>
-        {/* Call-to-Action Button */}
         <button
           className="mt-4 bg-pink-600 text-white px-6 py-3 rounded shadow-md hover:bg-pink-700 transition"
           onClick={handleExplore}

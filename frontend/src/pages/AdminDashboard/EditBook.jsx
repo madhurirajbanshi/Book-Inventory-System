@@ -65,7 +65,6 @@ const EditBook = ({ book, setEditingBook, setBooks }) => {
 
   return (
     <div className="bg-white shadow-md rounded-lg p-6 max-w-4xl mx-auto">
-      <h2 className="text-2xl font-bold text-blue-700 mb-6">Edit Book</h2>
 
       {successMessage && (
         <p className="text-green-600 text-center mb-4">{successMessage}</p>

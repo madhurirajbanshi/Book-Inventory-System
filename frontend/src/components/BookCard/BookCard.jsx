@@ -35,15 +35,13 @@ const BookCard = ({ data, favourite, onRemove }) => {
           {data.title}
         </h3>
 
-        {/* Star Rating */}
-        {/* Star Rating for 3 Yellow Stars */}
         <div className="flex justify-center items-center mb-1 space-x-0.5">
           {[...Array(5)].map((_, index) => (
             <svg
               key={index}
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
-              fill={index < 3 ? "#FFD700" : "#e5e7eb"} // Hardcode 3 yellow stars
+              fill={index < 3 ? "#FFD700" : "#e5e7eb"} 
               className="w-5 h-5"
             >
               <path d="M12 17.75l-5.447 2.86 1.04-6.064-4.407-4.294 6.091-.885L12 3.25l2.724 5.117 6.091.885-4.407 4.294 1.04 6.064z" />
@@ -51,7 +49,6 @@ const BookCard = ({ data, favourite, onRemove }) => {
           ))}
         </div>
 
-        {/* Price */}
         <p className="text-lg font-semibold text-gray-800 mt-1">
           Rs {data.price}
         </p>

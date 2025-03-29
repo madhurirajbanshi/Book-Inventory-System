@@ -22,13 +22,12 @@ const ViewBookDetails = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
 
+  const token = localStorage.getItem("token");
+
   useEffect(() => {
-    const token = localStorage.getItem("token");
     const fetchBookDetails = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:5000/books/"
-        );
+        const response = await axios.get("http://localhost:5000/books/");
         const bookDetails = response.data.data.find((item) => item._id === id);
         if (bookDetails) {
           setBook(bookDetails);
@@ -46,7 +45,6 @@ const ViewBookDetails = () => {
     const fetchFeedbacks = async () => {
       try {
         const response = await axios.get("http://localhost:5000/feedback");
-        // Filter feedbacks for the current book
         const bookFeedbacks = response.data.data.filter(
           (item) => item.bookId === id
         );
@@ -61,7 +59,6 @@ const ViewBookDetails = () => {
       if (!token) return;
 
       try {
-        // Get current user info
         const userResponse = await axios.get(
           "http://localhost:5000/auth/userinformation",
           {
@@ -72,7 +69,6 @@ const ViewBookDetails = () => {
         );
         setCurrentUser(userResponse.data);
 
-        // Check if book is in favorites
         const favResponse = await axios.get(
           "http://localhost:5000/favourites",
           {
@@ -83,10 +79,10 @@ const ViewBookDetails = () => {
         );
         setIsFavorite(favResponse.data.some((item) => item.bookId === id));
 
-        // Check if book is in cart
-        const cartResponse = await axios.get("http://localhost:5000/cart", {
+        const cartResponse = await axios.get("http://localhost:5000/cart/getcart", {
           headers: { authorization: `Bearer ${token}` },
         });
+
         setIsInCart(cartResponse.data.some((item) => item.bookId === id));
 
         // }
@@ -232,7 +228,6 @@ const ViewBookDetails = () => {
         }
       );
 
-      // Add the new feedback to the displayed feedbacks
       setFeedbacks([response.data.data, ...feedbacks]);
       setFeedback("");
       toast.success("Feedback submitted successfully");
@@ -250,7 +245,6 @@ const ViewBookDetails = () => {
         headers: { authorization: `Bearer ${localStorage.getItem("token")}` },
       });
 
-      // Remove the deleted feedback from the state
       setFeedbacks(feedbacks.filter((item) => item._id !== feedbackId));
       toast.success("Feedback deleted successfully");
     } catch (error) {
@@ -311,7 +305,7 @@ const ViewBookDetails = () => {
   };
 
   const openImageInNewTab = (image) => {
-    window.open(image, "_blank"); // This opens the image in a new tab
+    window.open(image, "_blank"); 
   };
 
   const formatDate = (dateString) => {
@@ -324,7 +318,7 @@ const ViewBookDetails = () => {
     const secretKey = "8gBm/:&EnhH.1/q";
 
     // generate signature
-    const data = `total_amount=${book.price},transaction_uuid=${uuid},product_code=EPAYTEST`; // Must be in order
+    const data = `total_amount=${book.price},transaction_uuid=${uuid},product_code=EPAYTEST`; 
 
     const hash = CryptoJS.HmacSHA256(data, secretKey);
 
@@ -377,19 +371,18 @@ const ViewBookDetails = () => {
     );
 
   return (
-    <div className="container mx-auto px-4 md:px-16 py-8 ">
-      <div className="flex flex-col md:flex-row gap-8 items-start">
-        <div className="w-full md:w-1/4 flex flex-col items-center">
+    <div className="container mx-auto px-4    mt-8 md:px-16 py-8 ">
+      <div className="flex flex-col md:flex-row  gap-8 items-start">
+        <div className="w-full md:w-1/4 flex flex-col  items-center">
           <div className="relative w-full max-w-xs">
             <img
               src={book.image}
-              alt={book.title}
+              alt={book.image}
               onClick={() => openImageInNewTab(book.image)}
-              style={{ cursor: "pointer", height: "500px" }}
+              style={{ cursor: "pointer", height: "425px" }}
               className="w-full object-cover rounded-lg shadow-lg transition-all duration-300 hover:shadow-xl"
             />
 
-            {/* Favorite and Cart Buttons Overlay */}
             {currentUser && (
               <div className="absolute top-2 right-2 flex flex-col gap-2">
                 <button
@@ -463,18 +456,11 @@ const ViewBookDetails = () => {
               Buy for Rs {book.price || "499"}
             </button>
           </div>
-          <div className=" bg-white rounded-lg shadow-sm p-6 mt-10">
-            {renderUserRatingStars()}
-            <p className=" text-sm text-gray-500 mt-10">
-              Your rating helps other readers find great books!
-            </p>
-          </div>
         </div>
 
-        {/* Book Details Section */}
         <div className="w-full md:w-3/4 text-gray-800">
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">
+          <div className="bg-white mb-15 rounded-lg shadow-sm p-6">
+            <h1 className="text-4xl font-bold text-gray-900 mb-0 mt-[-16px]">
               {book.title}
             </h1>
 
@@ -505,7 +491,7 @@ const ViewBookDetails = () => {
             </div>
 
             <div>
-              <p className="mt-6 leading-relaxed font-semibold text-black-700">
+              <p className="mt-6 leading-relaxed font-semibold text-black-700 text-justify max-w-xl">
                 {book.description ||
                   "Brimming with magic and romance, a young fairy queen must form an unlikely alliance or risk an unspeakable danger destroying all she holds dear in this standalone YA novel from a bestselling author."}
               </p>
@@ -531,29 +517,31 @@ const ViewBookDetails = () => {
             </div>
           </div>
 
-          {/* Feedback Section */}
-          <div className="mt-8 bg-white rounded-lg shadow-sm p-6">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+          <div className="mt-8 bg-white rounded-lg shadow-sm p-3">
+            <h2 className="text-2xl mt-10 font-bold text-gray-800 mb-4">
               Share your thoughts
             </h2>
             <textarea
               value={feedback}
               onChange={(e) => setFeedback(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-lg mb-4 focus:ring-2 focus:ring-[#00563B] focus:border-transparent transition duration-200"
-              rows="4"
-              placeholder="What did you think about this book?"
+              className="w-1/2 p-10 border border-gray-300 rounded-lg mb-4 focus:ring-2 focus:ring-[#00563B] focus:border-transparent transition duration-200"
+              rows="3"
+              placeholder="Your feedback..."
             />
-            <button
-              onClick={handleFeedbackSubmit}
-              disabled={isSubmitting || !feedback.trim()}
-              className={`px-6 py-3 rounded-md transition duration-300 ${
-                isSubmitting || !feedback.trim()
-                  ? "bg-gray-400 text-white cursor-not-allowed"
-                  : "bg-[#00563B] text-white hover:bg-[#00412A]"
-              }`}
-            >
-              {isSubmitting ? "Submitting..." : "Submit Review"}
-            </button>
+
+            <div className="flex justify-start">
+              <button
+                onClick={handleFeedbackSubmit}
+                disabled={isSubmitting || !feedback.trim()}
+                className={`px-2 py-3 rounded-md transition duration-300 ${
+                  isSubmitting || !feedback.trim()
+                    ? "bg-gray-400 text-white cursor-not-allowed"
+                    : "bg-[#00563B] text-white hover:bg-[#00412A]"
+                }`}
+              >
+                {isSubmitting ? "Submitting..." : "Submit Review"}
+              </button>
+            </div>
           </div>
 
           {/* Reader Feedbacks Display Section */}

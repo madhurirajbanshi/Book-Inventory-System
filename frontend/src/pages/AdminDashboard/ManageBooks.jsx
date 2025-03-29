@@ -6,7 +6,7 @@ import { RiChatDeleteLine } from "react-icons/ri";
 const ManageBooks = ({ onNavigate, setEditingBook }) => {
   const [books, setBooks] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const booksPerPage = 6;
+  const booksPerPage = 4;
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -29,7 +29,6 @@ const ManageBooks = ({ onNavigate, setEditingBook }) => {
 
   const handleDelete = async (id) => {
     try {
-      // Get the token from localStorage
       const token = localStorage.getItem("token");
 
       if (!token) {
@@ -58,7 +57,6 @@ const ManageBooks = ({ onNavigate, setEditingBook }) => {
     setEditingBook(book);
   };
 
-  // Pagination logic
   const totalPages = Math.ceil(books.length / booksPerPage);
   const currentBooks = books.slice(
     (currentPage - 1) * booksPerPage,
@@ -70,15 +68,14 @@ const ManageBooks = ({ onNavigate, setEditingBook }) => {
   };
 
   return (
-    <div className="p-0 bg-white-100 rounded-lg">
-      <h1 className="text-2xl font-semibold text-gray-800 mt-2 mb-6">
-        Manage Books
-      </h1>
+    <div className="p-0 bg-white-100  mt-8 rounded-lg">
+    
 
       <div className="overflow-x-auto max-h-[calc(100vh-200px)]">
-        <table className="min-w-full table-auto bg-white border-collapse shadow-md rounded-lg mt-0 border border-gray-300">
+        <table className="min-w-full table-auto bg-white border-collapse shadow-md rounded-lg mt-0 ">
           <thead>
             <tr className="text-black">
+             
               <th className="px-6 py-3 text-left border-b border-gray-300">
                 Title
               </th>
@@ -100,6 +97,7 @@ const ManageBooks = ({ onNavigate, setEditingBook }) => {
             {currentBooks.length > 0 ? (
               currentBooks.map((book) => (
                 <tr key={book._id} className="border-b hover:bg-gray-50">
+
                   <td className="px-6 py-3">{book.title}</td>
                   <td className="px-6 py-3">{book.author}</td>
                   <td className="px-6 py-3">{book.category}</td>
@@ -131,7 +129,6 @@ const ManageBooks = ({ onNavigate, setEditingBook }) => {
         </table>
       </div>
 
-      {/* Pagination */}
       <div className="mt-4 flex justify-center">
         {Array.from({ length: totalPages }, (_, index) => (
           <button

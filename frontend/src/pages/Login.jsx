@@ -15,6 +15,7 @@ const Login = () => {
 
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false); 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -44,26 +45,29 @@ const Login = () => {
         password: values.password,
       });
 
-      const { token, id, role, message } = response.data;
+      const { token, id, role } = response.data;
 
       console.log("==== Login Successful ====");
       console.log("User ID:", id);
       console.log("Role:", role);
       console.log("Token:", token);
-      console.log("=========================");
 
-      // ✅ Dispatch actions to update Redux store
-      dispatch(authActions.login()); // Set isLoggedIn to true
-      dispatch(authActions.changeRole(role)); // Set user role in Redux
+      dispatch(authActions.login());
+      dispatch(authActions.changeRole(role));
 
-      // Store data in local storage
-      localStorage.setItem("token", token);
-      console.log("tokien after logn", token);
-      localStorage.setItem("userId", id);
-      localStorage.setItem("role", role);
+      if (rememberMe) {
+        // Store data persistently
+        localStorage.setItem("token", token);
+        localStorage.setItem("userId", id);
+        localStorage.setItem("role", role);
+      } else {
+        // Store data only for the session
+        sessionStorage.setItem("token", token);
+        sessionStorage.setItem("userId", id);
+        sessionStorage.setItem("role", role);
+      }
 
-      alert(message);
-      navigate("/AdminDashboard");
+      navigate("/");
     } catch (error) {
       setLoading(false);
       setErrors({
@@ -75,7 +79,7 @@ const Login = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 md:px-16 py-8">
+    <div className="container mx-auto px-4 md:px-16 mt-10 py-8">
       <div className="max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg">
         <h2 className="text-2xl font-bold text-center text-gray-900 mb-4">
           Login
@@ -97,7 +101,7 @@ const Login = () => {
               name="username"
               value={values.username}
               onChange={handleChange}
-              className="w-full p-3 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+              className="w-full p-2 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
             />
             {errors.username && (
               <p className="text-red-500 text-sm">{errors.username}</p>
@@ -117,17 +121,34 @@ const Login = () => {
               name="password"
               value={values.password}
               onChange={handleChange}
-              className="w-full p-3 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+              className="w-full p-2 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
             />
             {errors.password && (
               <p className="text-red-500 text-sm">{errors.password}</p>
             )}
           </div>
 
+          <div className="mb-4 flex items-center">
+            <input
+              type="checkbox"
+              id="rememberMe"
+              name="rememberMe"
+              checked={rememberMe}
+              onChange={() => setRememberMe(!rememberMe)}
+              className="w-4 h-4 text-pink-600 border-gray-300 rounded focus:ring-pink-500"
+            />
+            <label
+              htmlFor="rememberMe"
+              className="ml-2 text-gray-700 text-lg font-medium"
+            >
+              Remember Me
+            </label>
+          </div>
+
           <div className="mb-6">
             <button
               type="submit"
-              className="w-full bg-pink-600 text-white text-lg py-3 rounded-md hover:bg-pink-700 transition duration-300"
+              className="w-full bg-pink-600 text-white text-lg py-2 rounded-md hover:bg-pink-700 transition duration-300"
               disabled={loading}
             >
               {loading ? "Logging in..." : "Login"}

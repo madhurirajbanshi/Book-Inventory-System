@@ -1,5 +1,5 @@
 import React from "react";
-import { FaStar, FaUserCircle } from "react-icons/fa"; // Star and Avatar icons
+import { FaStar, FaUserCircle } from "react-icons/fa"; 
 
 const Feedback = () => {
   const feedbacks = [
@@ -29,7 +29,7 @@ const Feedback = () => {
         {feedbacks.map((feedback, index) => (
           <div
             key={index}
-            className="relative bg-white bg-opacity-90 shadow-lg rounded-2xl p-6 flex flex-col transform transition-all hover:scale-105 hover:shadow-2xl duration-300 w-full"
+            className="relative bg-white bg-opacity-90 shadow-lg rounded-2xl p-3 flex flex-col transform transition-all hover:scale-105 hover:shadow-2xl duration-300 w-full"
           >
             <div className="flex justify-between items-center mb-4">
               <div className="flex items-center space-x-3">
@@ -49,7 +49,6 @@ const Feedback = () => {
               </div>
             </div>
 
-            {/* Feedback Message */}
             <p className="text-gray-800 font-medium text-base leading-relaxed text-justify">
               "{feedback.text}"
             </p>

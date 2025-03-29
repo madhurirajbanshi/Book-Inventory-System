@@ -4,7 +4,6 @@ import User from '../models/User.js';
 
 const addFeedback = async (req, res) => {
   try {
-    // Check if the user is authenticated
     if (!req.user || !req.user.id) {
       return res.status(403).json({ message: "Unauthorized access" });
     }
@@ -17,13 +16,11 @@ const addFeedback = async (req, res) => {
       });
     }
     
-    // Find the book to get its details
     const book = await Book.findById(bookId);
     if (!book) {
       return res.status(404).json({ message: "Book not found" });
     }
     
-    // Create a new feedback entry in the database
     const newFeedback = await Feedback.create({
       userId: req.user.id,
       bookId: bookId,
@@ -50,7 +47,6 @@ const addFeedback = async (req, res) => {
   }
 };
 
-// Get all feedbacks
 const getFeedbacks = async (req, res) => {
   try {
     const feedbacks = await Feedback.find().sort({ createdAt: -1 });
@@ -69,7 +65,6 @@ const getFeedbacks = async (req, res) => {
   }
 };
 
-// Delete feedback
 const deleteFeedback = async (req, res) => {
   try {
     if (!req.user || !req.user.id) {
@@ -78,21 +73,18 @@ const deleteFeedback = async (req, res) => {
     
     const { feedbackId } = req.params;
     
-    // Find the feedback
     const feedback = await Feedback.findById(feedbackId);
     
     if (!feedback) {
       return res.status(404).json({ message: "Feedback not found" });
     }
     
-    // Check if the feedback belongs to the authenticated user
     if (feedback.userId.toString() !== req.user.id) {
       return res.status(403).json({ 
         message: "You are not authorized to delete this feedback" 
       });
     }
     
-    // Delete the feedback
     await Feedback.findByIdAndDelete(feedbackId);
     
     res.status(200).json({ 
