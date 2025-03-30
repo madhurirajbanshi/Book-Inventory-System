@@ -122,7 +122,7 @@ const ManageBooks = ({ onNavigate, setEditingBook }) => {
           <button
             key={index}
             onClick={() => setCurrentPage(index + 1)}
-            className={`px-3 py-1 text-sm rounded-full ${
+            className={`px-1 py-1 text-sm rounded-full ${
               currentPage === index + 1
                 ? "bg-blue-500 text-white"
                 : "bg-gray-300 text-gray-700"
