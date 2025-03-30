@@ -1,5 +1,5 @@
-import Book from '../models/Book.js';
-import authenticateToken from '../middleware/authMiddleware.js';
+import Book from "../models/Book.js";
+import authenticateToken from "../middleware/authMiddleware.js";
 
 const createBook = async (req, res) => {
   try {
@@ -7,11 +7,20 @@ const createBook = async (req, res) => {
       return res.status(403).json({ message: "Unauthorized access" });
     }
 
-    if (req.user.role !== 'admin') {
+    if (req.user.role !== "admin") {
       return res.status(403).json({ message: "Access denied. Admins only." });
     }
 
-    const { title, author, description, category, price, publishedDate, image, stock } = req.body;
+    const {
+      title,
+      author,
+      description,
+      category,
+      price,
+      publishedDate,
+      image,
+      stock,
+    } = req.body;
 
     const newBook = new Book({
       title,
@@ -26,7 +35,7 @@ const createBook = async (req, res) => {
     });
 
     await newBook.save();
-    
+
     res.status(201).json({ message: "Book added successfully", newBook });
   } catch (error) {
     console.error("Error adding book:", error);
@@ -53,11 +62,13 @@ const updateBook = async (req, res) => {
       return res.status(403).json({ message: "Unauthorized access" });
     }
 
-    if (req.user.role !== 'admin') {
+    if (req.user.role !== "admin") {
       return res.status(403).json({ message: "Access denied. Admins only." });
     }
 
-    const updatedBook = await Book.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const updatedBook = await Book.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
 
     if (!updatedBook) {
       return res.status(404).json({ message: "Book not found" });
@@ -76,7 +87,7 @@ const deleteBook = async (req, res) => {
       return res.status(403).json({ message: "Unauthorized access" });
     }
 
-    if (req.user.role !== 'admin') {
+    if (req.user.role !== "admin") {
       return res.status(403).json({ message: "Access denied. Admins only." });
     }
 
@@ -96,10 +107,10 @@ const deleteBook = async (req, res) => {
 const getAllBooks = async (req, res) => {
   try {
     const books = await Book.find()
-      .sort({ createdAt: -1 }) 
-      .populate('addedBy', 'username email');
-    
-    res.status(200).json({status:"Success",data:books});
+      .sort({ createdAt: -1 })
+      .populate("addedBy", "username email");
+
+    res.status(200).json({ status: "Success", data: books });
   } catch (error) {
     console.error("Error fetching books:", error);
     res.status(500).json({ message: "Server error" });
@@ -108,9 +119,8 @@ const getAllBooks = async (req, res) => {
 
 const getrecentbooks = async (req, res) => {
   try {
-    const books = await Book.find()
-      .sort({ createdAt: -1 }).limit(10);    
-    res.status(200).json({status:"Success",data:books});
+    const books = await Book.find().sort({ createdAt: -1 }).limit(10);
+    res.status(200).json({ status: "Success", data: books });
   } catch (error) {
     console.error("Error fetching books:", error);
     res.status(500).json({ message: "Server error" });
@@ -121,9 +131,9 @@ const searchBooks = async (req, res) => {
     const { title, author, category } = req.query;
     const query = {};
 
-    if (title) query.title = { $regex: title, $options: "i" }; 
-    if (author) query.author = { $regex: author, $options: "i" }; 
-    if (category) query.category = { $regex: category, $options: "i" }; 
+    if (title) query.title = { $regex: title, $options: "i" };
+    if (author) query.author = { $regex: author, $options: "i" };
+    if (category) query.category = { $regex: category, $options: "i" };
     const books = await Book.find(query);
 
     if (books.length === 0) {
@@ -137,5 +147,12 @@ const searchBooks = async (req, res) => {
   }
 };
 
-
-export { createBook, getAllBooks, getBookById, updateBook, deleteBook ,getrecentbooks,searchBooks};
+export {
+  createBook,
+  getAllBooks,
+  getBookById,
+  updateBook,
+  deleteBook,
+  getrecentbooks,
+  searchBooks,
+};

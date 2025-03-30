@@ -1,7 +1,6 @@
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 
-
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
