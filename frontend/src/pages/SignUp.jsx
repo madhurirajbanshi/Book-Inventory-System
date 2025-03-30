@@ -72,7 +72,7 @@ const SignUp = () => {
 
   return (
     <div className="container mx-auto px-4 md:px-16 py-8">
-      <div className="max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg">
+      <div className="max-w-md mx-auto bg-white p-4 rounded-lg shadow-lg">
         <h2 className="text-2xl font-bold text-center text-gray-900 mb-4">
           Sign Up
         </h2>
@@ -93,14 +93,13 @@ const SignUp = () => {
               name="username"
               value={values.username}
               onChange={handleChange}
-              className="w-full p-3 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+              className="w-full p-2 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
             />
             {errors.username && (
               <p className="text-red-500 text-sm">{errors.username}</p>
             )}
           </div>
 
-          {/* Email Field */}
           <div className="mb-4">
             <label
               htmlFor="email"
@@ -114,7 +113,7 @@ const SignUp = () => {
               name="email"
               value={values.email}
               onChange={handleChange}
-              className="w-full p-3 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+              className="w-full p-2 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
             />
             {errors.email && (
               <p className="text-red-500 text-sm">{errors.email}</p>
@@ -124,7 +123,7 @@ const SignUp = () => {
           <div className="mb-4">
             <label
               htmlFor="address"
-              className="block text-lg font-medium text-gray-700"
+              className="block text-lg font-medium  text-gray-700"
             >
               Address
             </label>
@@ -134,14 +133,13 @@ const SignUp = () => {
               name="address"
               value={values.address}
               onChange={handleChange}
-              className="w-full p-3 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+              className="w-full p-2 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
             />
             {errors.address && (
               <p className="text-red-500 text-sm">{errors.address}</p>
             )}
           </div>
 
-          {/* Password Field */}
           <div className="mb-4">
             <label
               htmlFor="password"
@@ -155,7 +153,7 @@ const SignUp = () => {
               name="password"
               value={values.password}
               onChange={handleChange}
-              className="w-full p-3 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+              className="w-full p-2 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
             />
             {errors.password && (
               <p className="text-red-500 text-sm">{errors.password}</p>
@@ -175,7 +173,7 @@ const SignUp = () => {
               name="confirmPassword"
               value={values.confirmPassword}
               onChange={handleChange}
-              className="w-full p-3 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+              className="w-full p-2 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
             />
             {errors.confirmPassword && (
               <p className="text-red-500 text-sm">{errors.confirmPassword}</p>
@@ -185,7 +183,7 @@ const SignUp = () => {
           <div className="mb-6">
             <button
               type="submit"
-              className="w-full bg-pink-600 text-white text-lg py-3 rounded-md hover:bg-pink-700 transition duration-300"
+              className="w-full bg-pink-600 text-white text-lg py-2 rounded-md hover:bg-pink-700 transition duration-300"
               disabled={loading}
             >
               {loading ? "Signing Up..." : "Sign Up"}

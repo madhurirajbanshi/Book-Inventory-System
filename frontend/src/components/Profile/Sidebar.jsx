@@ -14,10 +14,10 @@ const Sidebar = ({ user, loading }) => {
               "https://th.bing.com/th/id/OIP.65cr4DZsNGAvYWUr6Rg5qQHaHa?rs=1&pid=ImgDetMain"
             }
             alt="Profile Avatar"
-            className="w-24 h-24 rounded-full ml-5 mb-4 border border-gray-300 object-cover"
+            className="w-24 h-24 rounded-full ml-12 mb-4 border border-gray-300 object-cover"
           />
 
-          <h3 className="font-semibold text-xl text-gray-600">
+          <h3 className="font-semibold text-xl  text-gray-600">
             {user.username}
           </h3>
           <p className="text-pink-600 text-sm">{user.email}</p>
@@ -25,7 +25,6 @@ const Sidebar = ({ user, loading }) => {
           <nav className="mt-5 space-y-3 w-full">
             <SidebarLink to="/profile" label="❤️ Favorites" />
             <SidebarLink to="/profile/orderhistory" label="📦 Order History" />
-            <SidebarLink to="/profile/settings" label="⚙️ Settings" />
           </nav>
         </div>
       ) : (

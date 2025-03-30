@@ -44,17 +44,16 @@ const App = () => {
               <RecentlyAdded />
               <BookSection />
               <Feedback />
-              
             </>
           }
         />
         <Route path="/allbooks" element={<AllBooks />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/cart" element={<Cart />} />
+        <Route path="/cart" element={<PrivateRoute element={<Cart />} />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/search" element={<SearchBooks/>} />
+        <Route path="/search" element={<SearchBooks />} />
 
-        <Route path="/profile" element={<Profile />}>
+        <Route path="/profile" element={<PrivateRoute element={<Profile />} />}>
           <Route index element={<Favourite />} />
           <Route path="orderhistory" element={<UserOrderHistory />} />
         </Route>

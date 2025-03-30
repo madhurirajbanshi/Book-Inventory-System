@@ -352,6 +352,7 @@ const ViewBookDetails = () => {
 
     document.body.appendChild(form);
     form.submit();
+      window.location.href = "/";
   };
 
   if (loading) return <Loader />;

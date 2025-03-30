@@ -131,7 +131,39 @@ const updateUserInformation = async (req, res) => {
   }
 };
 
- 
+ const getAllUsers = async (req, res) => {
+   try {
+     const users = await User.find().select("-password"); // Exclude password from response
 
-export { registerUser, loginUser, getUserInformation,updateUserInformation, };
+     if (!users) {
+       return res.status(404).json({ message: "No users found" });
+     }
+
+     res.status(200).json(users);
+   } catch (error) {
+     console.error("Error fetching all users:", error);
+     res.status(500).json({ message: "Internal server error" });
+   }
+ };
+const deleteUser = async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    if (!userId) {
+      return res.status(400).json({ message: "User ID is required" });
+    }
+
+    const deletedUser = await User.findByIdAndDelete(userId);
+
+    if (!deletedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({ message: "User deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+export { registerUser, loginUser, getUserInformation,updateUserInformation,getAllUsers,deleteUser };
 

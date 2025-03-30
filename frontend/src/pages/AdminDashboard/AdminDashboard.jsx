@@ -3,10 +3,11 @@ import { Link } from "react-router-dom";
 import UploadBook from "./UploadBook";
 import ManageBooks from "./ManageBooks";
 import EditBook from "./EditBook";
+import Users from "./Users";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { IoMdBook } from "react-icons/io";
 const AdminDashboard = () => {
-  const [activeSection, setActiveSection] = useState("dashboard");
+  const [activeSection, setActiveSection] = useState("manageBooks");
   const [editingBook, setEditingBook] = useState(null);
 
 
@@ -34,7 +35,14 @@ const AdminDashboard = () => {
               <IoMdBook />
               <span>Manage Books</span>
             </Link>
-           
+            <Link
+              to="#"
+              onClick={() => setActiveSection("users")}
+              className="flex items-center gap-2 px-4 py-3 text-gray-700 bg-pink-200 rounded-lg"
+            >
+              <IoMdBook />
+              <span> Users</span>
+            </Link>
           </nav>
         </aside>
 
@@ -50,6 +58,8 @@ const AdminDashboard = () => {
                   setEditingBook={setEditingBook}
                 />
               )}
+              {activeSection === "users" && <Users />}
+
               {activeSection === "dashboard" && <DashboardContent />}
             </>
           )}

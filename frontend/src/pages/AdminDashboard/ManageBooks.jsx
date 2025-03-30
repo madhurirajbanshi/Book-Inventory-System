@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { FaEdit } from "react-icons/fa";
-import { MdDeleteForever } from "react-icons/md";
 import { RiChatDeleteLine } from "react-icons/ri";
 
 const ManageBooks = ({ onNavigate, setEditingBook }) => {
@@ -30,7 +29,6 @@ const ManageBooks = ({ onNavigate, setEditingBook }) => {
   const handleDelete = async (id) => {
     try {
       const token = localStorage.getItem("token");
-
       if (!token) {
         console.error("No token found");
         return;
@@ -38,9 +36,7 @@ const ManageBooks = ({ onNavigate, setEditingBook }) => {
 
       const response = await fetch(`http://localhost:5000/books/${id}`, {
         method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       if (response.ok) {
@@ -63,55 +59,46 @@ const ManageBooks = ({ onNavigate, setEditingBook }) => {
     currentPage * booksPerPage
   );
 
-  const handlePageClick = (page) => {
-    setCurrentPage(page);
-  };
-
   return (
-    <div className="p-0 bg-white-100  mt-8 rounded-lg">
-    
-
-      <div className="overflow-x-auto max-h-[calc(100vh-200px)]">
-        <table className="min-w-full table-auto bg-white border-collapse shadow-md rounded-lg mt-0 ">
-          <thead>
-            <tr className="text-black">
-             
-              <th className="px-6 py-3 text-left border-b border-gray-300">
-                Title
-              </th>
-              <th className="px-6 py-3 text-left border-b border-gray-300">
+    <div className="p-4 bg-white mt-8 rounded-lg shadow-md">
+      {/* Table Container */}
+      <div className="overflow-x-auto">
+        <table className="min-w-full border-collapse bg-white rounded-lg shadow-md">
+          <thead className="bg-gray-100">
+            <tr className="text-gray-700">
+              <th className="px-4 py-3 text-left">Title</th>
+              <th className="px-4 py-3 text-left hidden sm:table-cell">
                 Author
               </th>
-              <th className="px-6 py-3 text-left border-b border-gray-300">
+              <th className="px-4 py-3 text-left hidden md:table-cell">
                 Category
               </th>
-              <th className="px-6 py-3 text-left border-b border-gray-300">
-                Price
-              </th>
-              <th className="px-6 py-3 text-left border-b border-gray-300">
-                Actions
-              </th>
+              <th className="px-4 py-3 text-left">Price</th>
+              <th className="px-4 py-3 text-center">Actions</th>
             </tr>
           </thead>
-          <tbody className="overflow-y-auto max-h-[calc(100vh-300px)]">
+          <tbody>
             {currentBooks.length > 0 ? (
               currentBooks.map((book) => (
                 <tr key={book._id} className="border-b hover:bg-gray-50">
-
-                  <td className="px-6 py-3">{book.title}</td>
-                  <td className="px-6 py-3">{book.author}</td>
-                  <td className="px-6 py-3">{book.category}</td>
-                  <td className="px-6 py-3">Rs.{book.price}</td>
-                  <td className="px-6 py-3">
+                  <td className="px-4 py-3">{book.title}</td>
+                  <td className="px-4 py-3 hidden sm:table-cell">
+                    {book.author}
+                  </td>
+                  <td className="px-4 py-3 hidden md:table-cell">
+                    {book.category}
+                  </td>
+                  <td className="px-4 py-3">Rs.{book.price}</td>
+                  <td className="px-4 py-3 flex justify-center space-x-2">
                     <button
                       onClick={() => handleEdit(book)}
-                      className="px-4 py-2 text-green-500 rounded-md mr-2"
+                      className="p-2 text-green-500 bg-green-100 rounded hover:bg-green-200"
                     >
                       <FaEdit />
                     </button>
                     <button
                       onClick={() => handleDelete(book._id)}
-                      className="px-2 py-2 text-red-500 rounded-md"
+                      className="p-2 text-red-500 bg-red-100 rounded hover:bg-red-200"
                     >
                       <RiChatDeleteLine />
                     </button>
@@ -120,7 +107,7 @@ const ManageBooks = ({ onNavigate, setEditingBook }) => {
               ))
             ) : (
               <tr>
-                <td colSpan="5" className="px-6 py-3 text-center">
+                <td colSpan="5" className="px-4 py-3 text-center">
                   No books found.
                 </td>
               </tr>
@@ -129,15 +116,16 @@ const ManageBooks = ({ onNavigate, setEditingBook }) => {
         </table>
       </div>
 
-      <div className="mt-4 flex justify-center">
+      {/* Pagination */}
+      <div className="mt-4 flex justify-center space-x-2">
         {Array.from({ length: totalPages }, (_, index) => (
           <button
             key={index}
-            onClick={() => handlePageClick(index + 1)}
-            className={`px-1 py-1 mx-1 rounded-full ${
+            onClick={() => setCurrentPage(index + 1)}
+            className={`px-3 py-1 text-sm rounded-full ${
               currentPage === index + 1
-                ? "bg-blue-500"
-                : "bg-gray-300 text-black"
+                ? "bg-blue-500 text-white"
+                : "bg-gray-300 text-gray-700"
             }`}
           >
             {index + 1}

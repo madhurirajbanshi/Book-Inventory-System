@@ -32,7 +32,6 @@ const Favourite = () => {
       await axios.delete(`http://localhost:5000/favourites/remove/${_id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-
       setFavouriteBooks(FavouriteBooks.filter((book) => book._id !== _id));
     } catch (error) {
       console.error("Error removing favourite:", error);
@@ -40,24 +39,24 @@ const Favourite = () => {
   };
 
   return (
-    <div className="flex flex-wrap gap-4 mt-6 justify-center p-2 sm:p-4">
+    <div className="p-4 sm:p-6 lg:p-8 flex flex-col items-center">
       {FavouriteBooks.length === 0 && (
-        <div className="text-center text-gray-500 text-xl">
+        <div className="text-center text-gray-500 text-lg sm:text-xl">
           No Favorite Books
         </div>
       )}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full max-w-7xl">
         {FavouriteBooks?.map((item, i) => (
-          <div key={i} className="w-full sm:w-40 md:w-48 lg:w-56 relative">
+          <div key={i} className="relative">
             <button
               onClick={() => handleRemoveFavourite(item._id)}
-              className="absolute top-2 left-2 z-10 bg-white rounded-full p-1 shadow-md hover:bg-gray-100"
+              className="absolute top-2 left-2 z-10 bg-white rounded-full p-2 shadow-md hover:bg-gray-100 transition duration-200"
               aria-label="Remove from favorites"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
+                width="20"
+                height="20"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -70,9 +69,7 @@ const Favourite = () => {
                 <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
               </svg>
             </button>
-            <BookCard
-              data={item}
-            />
+            <BookCard data={item} />
           </div>
         ))}
       </div>

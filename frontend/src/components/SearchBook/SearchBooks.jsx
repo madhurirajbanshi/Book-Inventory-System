@@ -224,7 +224,6 @@ const SearchBooks = () => {
                 onClick={() => handleBookClick(book._id)}
                 className="flex bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer"
               >
-                {/* Book Cover */}
                 <div className="w-1/3 relative">
                   <img
                     src={book.image}
